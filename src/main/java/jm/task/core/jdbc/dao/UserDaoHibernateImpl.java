@@ -21,7 +21,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS user (" +
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS User (" +
                             "Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
                             "name VARCHAR(20)," +
                             " lastName VARCHAR(20), " +
@@ -63,10 +63,9 @@ public class UserDaoHibernateImpl implements UserDao {
     public void removeUserById(long id) {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            //User user = session.load(User.class, id);
-            //session.delete(user);
-            session.createQuery("DELETE User where id = :id")
-                    .setParameter("id", id).executeUpdate();
+            session.delete(session.load(User.class, id));
+            /*session.createQuery("DELETE User where id = :id")
+                    .setParameter("id", id).executeUpdate();*/
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
